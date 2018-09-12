@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Showcase</string>
+    <string name="title_offer">Название</string>
+    <string name="dercr_offer">Описание оффера</string>
+    <string name="more_offer">Перейти</string>
 </resources>
