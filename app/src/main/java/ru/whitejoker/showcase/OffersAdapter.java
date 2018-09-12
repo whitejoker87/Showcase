@@ -1,6 +1,8 @@
 package ru.whitejoker.showcase;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,32 +14,42 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.TreeMap;
+import com.squareup.picasso.Picasso;
 
-public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder> {
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
+
+    private Context context;
 
     private OfferModel offers;
 
-    public OffersAdapter(OfferModel offers) {
+    public OffersAdapter(OfferModel offers, Context context) {
         this.offers = offers;
+        this.context = context;
     }
 
+
+
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OffersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.offer_item, parent, false);
-        return new ViewHolder(v);
+        return new OffersViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OffersViewHolder holder, int position) {
 
         OfferModel.Offer offer = offers.getOffers().get(position);
 
-        Picasso.with(convertView.getContext()).load(places.getImage()).into(holder.imageView);
-
-        holder.ivLogo.s
-
-
+        Picasso.get().load(offer.getLogo()).into(holder.ivLogo);
+        holder.tvTitle.setText(offer.getName());
+        holder.tvDescr.setText(offer.getDes());
+        holder.btMore.setText(offer.getBtn());
     }
 
     @Override
@@ -47,20 +59,36 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.ViewHolder
         return offers.getOffers().size();
     }
 
+    public void updateList(OfferModel offers) {
+        this.offers = offers;
+        notifyDataSetChanged();
+    }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
 
+    class OffersViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.iv_logo)
         ImageView ivLogo;
+        @BindView(R.id.tv_title)
         TextView tvTitle;
+        @BindView(R.id.tv_descr)
         TextView tvDescr;
+        @BindView(R.id.bt_more)
         Button btMore;
 
-        public ViewHolder(View itemView) {
+        public OffersViewHolder(View itemView) {
             super(itemView);
-            ivLogo = itemView.findViewById(R.id.iv_logo);
-            tvTitle = itemView.findViewById(R.id.tv_title);
-            tvDescr = itemView.findViewById(R.id.tv_descr);
-            btMore = itemView.findViewById(R.id.bt_more);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.bt_more)
+        public void onClickButtonMore() {
+
+            String urlOffer = offers.getOffers().get(getAdapterPosition()).getUrl();
+            Intent intent = new Intent(context, OfferDescriptionActivity.class);
+            context.startActivity(intent);
+
+
         }
     }
 }
