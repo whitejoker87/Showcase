@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     //private Unbinder unbinder;
     private OfferModel offerModel;
+    public static final String TAG_OFFERS_LIST_FRAGMENT = "offers_list";
+    public static final String TAG_OFFER_DESCRIPTION_FRAGMENT = "description";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +32,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void successRequest(OfferModel offerModel) {
-        OffersFragment offersFragment = (OffersFragment) getSupportFragmentManager().findFragmentByTag("offers_list");
+        OffersFragment offersFragment = (OffersFragment) getSupportFragmentManager().findFragmentByTag(TAG_OFFERS_LIST_FRAGMENT);
         if (offersFragment != null && offersFragment.isVisible())
             offersFragment.updateRecycler(offerModel);
         else {
             OffersFragment fragment = new OffersFragment();
             fragment.setOffers(offerModel);
-            setFragment(fragment, "offers_list");
+            setFragment(fragment, TAG_OFFERS_LIST_FRAGMENT );
         }
+    }
+
+    public void openDescription(int position) {
+        DescriprionFragment descriprionFragment = (DescriprionFragment) getSupportFragmentManager().findFragmentByTag(TAG_OFFER_DESCRIPTION_FRAGMENT);
+        if (descriprionFragment == null)
+            descriprionFragment = new DescriprionFragment();
+        //offersFragment.updateRecycler(offerModel);
+        //Сделать заполнение фрагмета
+
+
+            setFragment(descriprionFragment, TAG_OFFER_DESCRIPTION_FRAGMENT );
+
     }
 
     public void getOffers(){

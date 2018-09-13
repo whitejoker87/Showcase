@@ -85,9 +85,12 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
         @OnClick(R.id.bt_more)
         public void onClickButtonMore() {
 
-            String urlOffer = offers.getOffers().get(getAdapterPosition()).getUrl();
-            Intent intent = new Intent(context, OfferDescriptionActivity.class);
-            context.startActivity(intent);
+
+//            String urlOffer = offers.getOffers().get(getAdapterPosition()).getUrl();
+//            Intent intent = new Intent(context, OfferDescriptionActivity.class);
+//            context.startActivity(intent);
+
+
 
 
         }
