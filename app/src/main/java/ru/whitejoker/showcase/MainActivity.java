@@ -1,5 +1,7 @@
 package ru.whitejoker.showcase;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,38 +16,51 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.offers_recycle_view)
-    RecyclerView offersRecycleView;
-
-    private Unbinder unbinder;
-    private OffersAdapter offersAdapter;
+    //private Unbinder unbinder;
     private OfferModel offerModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        unbinder = ButterKnife.bind(this);
+        //unbinder = ButterKnife.bind(this);
         getOffers();
-        offersAdapter = new OffersAdapter(offerModel, this);
-        offersAdapter.updateList(offerModel);
-        offersRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        offersRecycleView.setAdapter(offersAdapter);
+
     }
 
-    private void getOffers() {
-        App.getAPI().getOfferList(1).enqueue(new Callback<OfferModel>() {
-            @Override
-            public void onResponse(Call<OfferModel> call, Response<OfferModel> response) {
-                offerModel = response.body();
-            }
+    public void successRequest(OfferModel offerModel) {
+        OffersFragment offersFragment = (OffersFragment) getSupportFragmentManager().findFragmentByTag("offers_list");
+        if (offersFragment != null && offersFragment.isVisible())
+            offersFragment.updateRecycler(offerModel);
+        else {
+            OffersFragment fragment = new OffersFragment();
+            fragment.setOffers(offerModel);
+            setFragment(fragment, "offers_list");
+        }
+    }
 
-            @Override
-            public void onFailure(Call<OfferModel> call, Throwable t) {
+    public void getOffers(){
+        if(offerModel != null)
+            successRequest(offerModel);
+        else
+            App.getAPI().getOfferList(1).enqueue(new Callback<OfferModel>() {
+                @Override
+                public void onResponse(Call<OfferModel> call, Response<OfferModel> response) {
+                    if(response.code() == 200) {
+                        successRequest(response.body());
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onFailure(Call<OfferModel> call, Throwable t) {
 
+                }
+            });
+    }
 
+    private void setFragment(Fragment fragment, String tag){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container_offers_list, fragment, tag);
+        transaction.commit();
     }
 }
