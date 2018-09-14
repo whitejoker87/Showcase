@@ -1,6 +1,7 @@
 package ru.whitejoker.showcase;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -25,12 +26,13 @@ import butterknife.OnClick;
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
 
     private Context context;
-
     private OfferModel offers;
+    private Activity activity;
 
-    public OffersAdapter(OfferModel offers, Context context) {
+    public OffersAdapter(OfferModel offers, Context context, Activity activity) {
         this.offers = offers;
         this.context = context;
+        this.activity = activity;
     }
 
 

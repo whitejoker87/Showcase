@@ -51,7 +51,12 @@ public class OffersFragment extends Fragment {
         unbinder = ButterKnife.bind(this,view);
 
         if (view instanceof RecyclerView) {
-            offersAdapter = new OffersRecyclerViewAdapter(getContext());
+            offersAdapter = new OffersRecyclerViewAdapter(getContext(), new OnClickButtonMoreListener() {
+                @Override
+                public void onClickButtonCallback(View view, int position) {
+                    ((MainActivity)getActivity()).openDescription(position);
+                }
+            });
             offersAdapter.updateList(offerModel);
             offersRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
             offersRecycleView.setAdapter(offersAdapter);

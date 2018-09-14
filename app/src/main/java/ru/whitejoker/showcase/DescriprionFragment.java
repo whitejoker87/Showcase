@@ -7,6 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import butterknife.BindView;
 
 
 /**
@@ -18,6 +23,17 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class DescriprionFragment extends Fragment {
+
+    @BindView(R.id.iv_logo_descr)
+    ImageView logoDescr;
+    @BindView(R.id.tv_title_descr)
+    TextView titleDescr;
+    @BindView(R.id.tv_full_descr)
+    TextView fullDescr;
+    @BindView(R.id.bt_open_url)
+    Button openUrlButton;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -28,6 +44,8 @@ public class DescriprionFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private OfferModel.Offer offerDescr;
 
     public DescriprionFragment() {
         // Required empty public constructor
@@ -89,6 +107,10 @@ public class DescriprionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setOffer(OfferModel.Offer offer){
+        offerDescr = offer;
     }
 
     /**

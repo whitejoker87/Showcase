@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         DescriprionFragment descriprionFragment = (DescriprionFragment) getSupportFragmentManager().findFragmentByTag(TAG_OFFER_DESCRIPTION_FRAGMENT);
         if (descriprionFragment == null)
             descriprionFragment = new DescriprionFragment();
+        OfferModel.Offer offerDescr =  offerModel.getOffers().get(position);
+        descriprionFragment.setOffer(offerDescr);
         //offersFragment.updateRecycler(offerModel);
         //Сделать заполнение фрагмета
 

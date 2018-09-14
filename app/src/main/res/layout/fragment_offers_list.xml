@@ -9,4 +9,4 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     tools:context=".OffersFragment"
-    tools:listitem="@layout/fragment_offers" />
+    tools:listitem="@layout/offer_item" />

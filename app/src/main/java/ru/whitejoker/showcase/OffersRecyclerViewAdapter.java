@@ -1,7 +1,6 @@
 package ru.whitejoker.showcase;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,8 +18,6 @@ import butterknife.OnClick;
 import ru.whitejoker.showcase.OffersFragment.OnListFragmentInteractionListener;
 import ru.whitejoker.showcase.dummy.DummyContent.DummyItem;
 
-import java.util.List;
-
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
@@ -31,17 +28,19 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
     //private final List<DummyItem> mValues;
     //private final OnListFragmentInteractionListener mListener;
     private Context context;
-
     private OfferModel offers;
 
-    public OffersRecyclerViewAdapter(Context context) {
+    private OnClickButtonMoreListener mListener;
+
+    public OffersRecyclerViewAdapter(Context context, OnClickButtonMoreListener listener) {
         this.context = context;
+        mListener = listener;
     }
 
     @Override
     public OffersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.offer_item, parent, false);
-        return new OffersViewHolder(v);
+        return new OffersViewHolder(v, mListener);
     }
 
     @Override
@@ -66,6 +65,10 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
         notifyDataSetChanged();
     }
 
+//    public void setOnClickButtonMoreListener(OnClickButtonMoreListener listener) {
+//        mListener = listener;
+//    }
+
     class OffersViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_logo)
@@ -77,18 +80,21 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
         @BindView(R.id.bt_more)
         Button btMore;
 
-        public OffersViewHolder(View itemView) {
+        public OffersViewHolder(View itemView, OnClickButtonMoreListener listener) {
             super(itemView);
+            mListener = listener;
             ButterKnife.bind(this, itemView);
         }
 
         @OnClick(R.id.bt_more)
         public void onClickButtonMore() {
+            mListener.onClickButtonCallback(itemView, getAdapterPosition());
 
 
 //            String urlOffer = offers.getOffers().get(getAdapterPosition()).getUrl();
 //            Intent intent = new Intent(context, OfferDescriptionActivity.class);
 //            context.startActivity(intent);
+
 
 
 
