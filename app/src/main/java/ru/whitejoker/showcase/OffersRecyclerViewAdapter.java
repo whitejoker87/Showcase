@@ -15,25 +15,14 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.whitejoker.showcase.OffersFragment.OnListFragmentInteractionListener;
-import ru.whitejoker.showcase.dummy.DummyContent.DummyItem;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecyclerViewAdapter.OffersViewHolder> {
 
-    //private final List<DummyItem> mValues;
-    //private final OnListFragmentInteractionListener mListener;
-    private Context context;
     private OfferModel offers;
 
-    private OnClickButtonMoreListener mListener;
+    private IOnClickButtonMoreListener mListener;
 
-    public OffersRecyclerViewAdapter(Context context, OnClickButtonMoreListener listener) {
-        this.context = context;
+    public OffersRecyclerViewAdapter(IOnClickButtonMoreListener listener) {
         mListener = listener;
     }
 
@@ -47,7 +36,6 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
     public void onBindViewHolder(@NonNull OffersViewHolder holder, int position) {
 
         OfferModel.Offer offer = offers.getOffers().get(position);
-
         Picasso.get().load(offer.getLogo()).into(holder.ivLogo);
         holder.tvTitle.setText(offer.getName());
         holder.tvDescr.setText(offer.getDes());
@@ -66,10 +54,6 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
         notifyDataSetChanged();
     }
 
-//    public void setOnClickButtonMoreListener(OnClickButtonMoreListener listener) {
-//        mListener = listener;
-//    }
-
     class OffersViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_logo)
@@ -81,7 +65,7 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
         @BindView(R.id.bt_more)
         Button btMore;
 
-        public OffersViewHolder(View itemView, OnClickButtonMoreListener listener) {
+        public OffersViewHolder(View itemView, IOnClickButtonMoreListener listener) {
             super(itemView);
             mListener = listener;
             ButterKnife.bind(this, itemView);
@@ -90,16 +74,6 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
         @OnClick(R.id.bt_more)
         public void onClickButtonMore() {
             mListener.onClickButtonCallback(itemView, getAdapterPosition());
-
-
-//            String urlOffer = offers.getOffers().get(getAdapterPosition()).getUrl();
-//            Intent intent = new Intent(context, OfferDescriptionActivity.class);
-//            context.startActivity(intent);
-
-
-
-
-
         }
     }
 }

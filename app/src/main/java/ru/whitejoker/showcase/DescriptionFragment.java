@@ -1,6 +1,5 @@
 package ru.whitejoker.showcase;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -55,13 +54,6 @@ public class DescriptionFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         if(offerDescr != null) {
@@ -71,23 +63,6 @@ public class DescriptionFragment extends Fragment {
             openUrlButton.setText(offerDescr.getBtn2());
         }
         super.onActivityCreated(savedInstanceState);
-    }
-
-    /*@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -103,16 +78,12 @@ public class DescriptionFragment extends Fragment {
     @OnClick(R.id.bt_open_url)
     public void onUrlButtonClick() {
 
-        // Build the intent
         Uri url = Uri.parse(offerDescr.getUrl());
         Intent urlIntent = new Intent(Intent.ACTION_VIEW, url);
-
-        // Verify it resolves
+        // Проверка на споссобность обработать intent
         PackageManager packageManager = getActivity().getPackageManager();
         List<ResolveInfo> activities = packageManager.queryIntentActivities(urlIntent, 0);
         boolean isIntentSafe = activities.size() > 0;
-
-        // Start an activity if it's safe
         if (isIntentSafe) {
             startActivity(urlIntent);
         }

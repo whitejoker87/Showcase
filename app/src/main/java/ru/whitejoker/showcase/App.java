@@ -13,15 +13,17 @@ public class App extends Application {
     private static ISandytrastAPI sandytrastAPI;
     private Retrofit retrofit;
 
+    public static final String TAG_OFFERS_LIST_FRAGMENT = "offers_list";
+    public static final String TAG_OFFER_DESCRIPTION_FRAGMENT = "description";
+    public static final String TAG_EMPTY_FRAGMENT = "empty";
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
-
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://sandytrast.info")
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         sandytrastAPI = retrofit.create(ISandytrastAPI.class);
     }

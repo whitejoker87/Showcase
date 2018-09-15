@@ -2,7 +2,6 @@ package ru.whitejoker.showcase;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class OfferModel {
@@ -37,7 +36,7 @@ public class OfferModel {
             private String url;
             private String btn;
             private String btn2;
-            @SerializedName("desc_full")
+            @SerializedName("desc_full") //необходимо для того чтоы десериализовать поле, т.к. имя отличчается от имени в json
             @Expose
             private String descFull;
             private Boolean browser;
@@ -72,13 +71,13 @@ public class OfferModel {
                 return btn2;
             }
 
-//            public Boolean getBrowser() {
-//                return browser;
-//            }
-//
-//            public Boolean getEnabled() {
-//                return enabled;
-//            }
+            public Boolean getBrowser() {
+                return browser;
+            }
+
+            public Boolean getEnabled() {
+                return enabled;
+            }
 
             public String getDescFull() {
                 return descFull;
