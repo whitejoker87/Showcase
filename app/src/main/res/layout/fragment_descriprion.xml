@@ -51,4 +51,13 @@
         android:text="Button"
         app:layout_constraintStart_toEndOf="@+id/iv_logo_descr"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_descr" />
+
+    <WebView
+        android:id="@+id/wv_descr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints,WebViewLayout" />
+
 </android.support.constraint.ConstraintLayout>

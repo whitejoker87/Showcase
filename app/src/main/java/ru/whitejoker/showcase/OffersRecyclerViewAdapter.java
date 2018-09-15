@@ -36,10 +36,17 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
     public void onBindViewHolder(@NonNull OffersViewHolder holder, int position) {
 
         OfferModel.Offer offer = offers.getOffers().get(position);
-        Picasso.get().load(offer.getLogo()).into(holder.ivLogo);
-        holder.tvTitle.setText(offer.getName());
-        holder.tvDescr.setText(offer.getDes());
-        holder.btMore.setText(offer.getBtn());
+        if (offer.getEnabled()) {
+            Picasso.get().load(offer.getLogo()).into(holder.ivLogo);
+            holder.tvTitle.setText(offer.getName());
+            holder.tvDescr.setText(offer.getDes());
+            holder.btMore.setText(offer.getBtn());
+        } else {
+            holder.ivLogo.setVisibility(View.GONE);
+            holder.tvTitle.setVisibility(View.GONE);
+            holder.tvDescr.setVisibility(View.GONE);
+            holder.btMore.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -69,7 +76,6 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
             super(itemView);
             mListener = listener;
             ButterKnife.bind(this, itemView);
-            if ((!offers.getOffers().get(getAdapterPosition()).getEnabled())) itemView.setVisibility(View.GONE);
         }
 
         @OnClick(R.id.bt_more)

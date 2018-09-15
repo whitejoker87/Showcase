@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -35,6 +36,10 @@ public class AboutFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         unbinder = ButterKnife.bind(this,view);
+        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_exit).setVisible(false);
+        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_about).setVisible(false);
+        ((OffersActivity)getActivity()).toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        ((OffersActivity)getActivity()).toolbar.setTitle("О программе");
         return view;
     }
 

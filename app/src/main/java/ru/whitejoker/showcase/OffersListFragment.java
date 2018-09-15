@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,6 +28,11 @@ public class OffersListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
         unbinder = ButterKnife.bind(this,view);
 
+        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_exit).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_exit).setVisible(true);
+        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_about).setVisible(true);
+        ((OffersActivity)getActivity()).toolbar.setNavigationIcon(null);
+        ((OffersActivity)getActivity()).toolbar.setTitle("Список офферов");
         if (view instanceof RecyclerView) {
             offersAdapter = new OffersRecyclerViewAdapter(new IOnClickButtonMoreListener() {
                 @Override

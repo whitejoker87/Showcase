@@ -32,12 +32,14 @@ public class OffersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_offers);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        //toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getFragmentManager().findFragmentByTag(App.TAG_OFFERS_LIST_FRAGMENT) == null) onBackPressed();
-                 else finish();
+                //if (getFragmentManager().findFragmentByTag(App.TAG_OFFERS_LIST_FRAGMENT) == null) onBackPressed();
+                 //else finish();
+                onBackPressed();
             }
         });
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,19 +50,26 @@ public class OffersActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.offers_menu, menu);
+        //toolbar.getMenu().findItem(R.id.action_exit).setVisible(true);
+        //toolbar.getMenu().findItem(R.id.action_exit).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_about) {
-            AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(App.TAG_ABOUT_FRAGMENT);
-            if (aboutFragment == null) aboutFragment = new AboutFragment();
-            int idAbout = offerModel.getId();
-            String nameAbout = offerModel.getName();
-            String infoAbout = offerModel.getInfo();
-            aboutFragment.setViews(idAbout, nameAbout, infoAbout);
-            setFragment(aboutFragment, App.TAG_ABOUT_FRAGMENT );
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(App.TAG_ABOUT_FRAGMENT);
+                if (aboutFragment == null) aboutFragment = new AboutFragment();
+                int idAbout = offerModel.getId();
+                String nameAbout = offerModel.getName();
+                String infoAbout = offerModel.getInfo();
+                aboutFragment.setViews(idAbout, nameAbout, infoAbout);
+                setFragment(aboutFragment, App.TAG_ABOUT_FRAGMENT );
+                break;
+            case R.id.action_exit:
+                finish();
+                break;
         }
         return true;
     }

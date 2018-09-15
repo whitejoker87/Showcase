@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class DescriptionFragment extends Fragment {
     TextView fullDescr;
     @BindView(R.id.bt_open_url)
     Button openUrlButton;
+    @BindView(R.id.wv_descr)
+    WebView webView;
 
 
     private OnFragmentInteractionListener mListener;
@@ -50,6 +53,10 @@ public class DescriptionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_descriprion, container, false);
         unbinder = ButterKnife.bind(this,view);
+        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_exit).setVisible(false);
+        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_about).setVisible(true);
+        ((OffersActivity)getActivity()).toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        ((OffersActivity)getActivity()).toolbar.setTitle("Описание оффера");
         return view;
     }
 
@@ -76,15 +83,19 @@ public class DescriptionFragment extends Fragment {
 
     @OnClick(R.id.bt_open_url)
     public void onUrlButtonClick() {
-
-        Uri url = Uri.parse(offerDescr.getUrl());
-        Intent urlIntent = new Intent(Intent.ACTION_VIEW, url);
-        // Проверка на споссобность обработать intent
-        PackageManager packageManager = getActivity().getPackageManager();
-        List<ResolveInfo> activities = packageManager.queryIntentActivities(urlIntent, 0);
-        boolean isIntentSafe = activities.size() > 0;
-        if (isIntentSafe) {
-            startActivity(urlIntent);
+        if (offerDescr.getBrowser()) {
+            Uri url = Uri.parse(offerDescr.getUrl());
+            Intent urlIntent = new Intent(Intent.ACTION_VIEW, url);
+            // Проверка на споссобность обработать intent
+            PackageManager packageManager = getActivity().getPackageManager();
+            List<ResolveInfo> activities = packageManager.queryIntentActivities(urlIntent, 0);
+            boolean isIntentSafe = activities.size() > 0;
+            if (isIntentSafe) {
+                startActivity(urlIntent);
+            }
+        } else {
+            webView.loadUrl(offerDescr.getUrl());
+            //сделать открытие тут
         }
 
     }
