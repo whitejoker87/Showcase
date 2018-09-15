@@ -51,6 +51,7 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
         Picasso.get().load(offer.getLogo()).into(holder.ivLogo);
         holder.tvTitle.setText(offer.getName());
         holder.tvDescr.setText(offer.getDes());
+        holder.btMore.setText(offer.getBtn());
     }
 
     @Override

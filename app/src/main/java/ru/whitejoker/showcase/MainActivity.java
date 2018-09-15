@@ -4,12 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +23,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //unbinder = ButterKnife.bind(this);
         getOffers();
+    }
 
+    public void getOffers(){
+        if(offerModel != null)
+            successRequest(offerModel);
+        else
+            App.getAPI().getOfferList(1).enqueue(new Callback<OfferModel>() {
+                @Override
+                public void onResponse(Call<OfferModel> call, Response<OfferModel> response) {
+                    if(response.code() == 200) {
+                        offerModel = response.body();
+                        successRequest(offerModel);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<OfferModel> call, Throwable t) {
+
+                }
+            });
     }
 
     public void successRequest(OfferModel offerModel) {
@@ -43,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDescription(int position) {
-        DescriprionFragment descriprionFragment = (DescriprionFragment) getSupportFragmentManager().findFragmentByTag(TAG_OFFER_DESCRIPTION_FRAGMENT);
+        DescriptionFragment descriprionFragment = (DescriptionFragment) getSupportFragmentManager().findFragmentByTag(TAG_OFFER_DESCRIPTION_FRAGMENT);
         if (descriprionFragment == null)
-            descriprionFragment = new DescriprionFragment();
+            descriprionFragment = new DescriptionFragment();
         OfferModel.Offer offerDescr =  offerModel.getOffers().get(position);
         descriprionFragment.setOffer(offerDescr);
         //offersFragment.updateRecycler(offerModel);
@@ -56,28 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getOffers(){
-        if(offerModel != null)
-            successRequest(offerModel);
-        else
-            App.getAPI().getOfferList(1).enqueue(new Callback<OfferModel>() {
-                @Override
-                public void onResponse(Call<OfferModel> call, Response<OfferModel> response) {
-                    if(response.code() == 200) {
-                        successRequest(response.body());
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<OfferModel> call, Throwable t) {
-
-                }
-            });
-    }
 
     private void setFragment(Fragment fragment, String tag){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container_offers_list, fragment, tag);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }
