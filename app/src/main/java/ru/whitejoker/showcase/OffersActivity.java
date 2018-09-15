@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.net.SocketTimeoutException;
@@ -31,17 +32,17 @@ public class OffersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_offers);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getFragmentManager().findFragmentByTag(App.TAG_OFFERS_LIST_FRAGMENT) == null) onBackPressed();
+                 else finish();
+            }
+        });
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         getOffers();
-//        BuildConfig.APPLICATION_ID = offerModel.getId().toString();
-//        try {
-//            final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-//            String appId = packageInfo.packageName;
-//            //getPackageManager().getPackageInfo()
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -53,11 +54,13 @@ public class OffersActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_about) {
-            DescriptionFragment descriptionFragment = (DescriptionFragment) getSupportFragmentManager().findFragmentByTag(App.TAG_OFFER_DESCRIPTION_FRAGMENT);
-            if (descriptionFragment == null) descriptionFragment = new DescriptionFragment();
-            OfferModel.Offer offerDescr =  offerModel.getOffers().get(position);
-            descriptionFragment.setOffer(offerDescr);
-            setFragment(descriptionFragment, App.TAG_OFFER_DESCRIPTION_FRAGMENT );
+            AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(App.TAG_ABOUT_FRAGMENT);
+            if (aboutFragment == null) aboutFragment = new AboutFragment();
+            int idAbout = offerModel.getId();
+            String nameAbout = offerModel.getName();
+            String infoAbout = offerModel.getInfo();
+            aboutFragment.setViews(idAbout, nameAbout, infoAbout);
+            setFragment(aboutFragment, App.TAG_ABOUT_FRAGMENT );
         }
         return true;
     }

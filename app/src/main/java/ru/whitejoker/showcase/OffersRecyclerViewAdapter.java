@@ -69,6 +69,7 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
             super(itemView);
             mListener = listener;
             ButterKnife.bind(this, itemView);
+            if ((!offers.getOffers().get(getAdapterPosition()).getEnabled())) itemView.setVisibility(View.GONE);
         }
 
         @OnClick(R.id.bt_more)

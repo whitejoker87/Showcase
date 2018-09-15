@@ -16,6 +16,7 @@ public class App extends Application {
     public static final String TAG_OFFERS_LIST_FRAGMENT = "offers_list";
     public static final String TAG_OFFER_DESCRIPTION_FRAGMENT = "description";
     public static final String TAG_EMPTY_FRAGMENT = "empty";
+    public static final String TAG_ABOUT_FRAGMENT = "about";
 
     @Override
     public void onCreate() {
