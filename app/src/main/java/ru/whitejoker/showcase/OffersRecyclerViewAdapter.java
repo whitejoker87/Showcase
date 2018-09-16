@@ -16,32 +16,36 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+//адаптер для списка офферов
 public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecyclerViewAdapter.OffersViewHolder> {
 
     private OfferModel offers;
+    private IOnClickButtonMoreListener mListener;//интерфейс обработчика нажатия на пункт списка
+    // (остался от реализации приложения через фрагменты)
+    //мне понравилась реализация поэтому оставил его
+    private final LayoutInflater mInflater;
 
-    private IOnClickButtonMoreListener mListener;
-
-    public OffersRecyclerViewAdapter(IOnClickButtonMoreListener listener) {
+    public OffersRecyclerViewAdapter(IOnClickButtonMoreListener listener, Context context) {//передаем экземпляр интерфесаи контекст
         mListener = listener;
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public OffersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.offer_item, parent, false);
-        return new OffersViewHolder(v, mListener);
+        View v = mInflater.inflate(R.layout.offer_item, parent, false);
+        return new OffersViewHolder(v, mListener);//сюда тоже передаем интерфейса экземпляр
     }
 
     @Override
     public void onBindViewHolder(@NonNull OffersViewHolder holder, int position) {
 
-        OfferModel.Offer offer = offers.getOffers().get(position);
-        if (offer.getEnabled()) {
-            Picasso.get().load(offer.getLogo()).into(holder.ivLogo);
+        OfferModel.Offer offer = offers.getOffers().get(position);//получаем объект оффера
+        if (offer.getEnabled()) {//если он разрешен заполняем
+            Picasso.get().load(offer.getLogo()).into(holder.ivLogo);//используем picasso для закгрузки лого
             holder.tvTitle.setText(offer.getName());
             holder.tvDescr.setText(offer.getDes());
-            holder.btMore.setText(offer.getBtn());
-        } else {
+            if (offer.getBtn() != null) holder.btMore.setText(offer.getBtn());
+        } else {//если запрещен убираем пункт списка
             holder.ivLogo.setVisibility(View.GONE);
             holder.tvTitle.setVisibility(View.GONE);
             holder.tvDescr.setVisibility(View.GONE);
@@ -55,7 +59,7 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
             return 0;
         return offers.getOffers().size();
     }
-
+//  метод для передачи объекта JSON и обновления списка
     public void updateList(OfferModel offers) {
         this.offers = offers;
         notifyDataSetChanged();
@@ -63,6 +67,7 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
 
     class OffersViewHolder extends RecyclerView.ViewHolder {
 
+        //Биндим View с помощью ButterKnife
         @BindView(R.id.iv_logo)
         ImageView ivLogo;
         @BindView(R.id.tv_title)
@@ -74,13 +79,13 @@ public class OffersRecyclerViewAdapter extends RecyclerView.Adapter<OffersRecycl
 
         public OffersViewHolder(View itemView, IOnClickButtonMoreListener listener) {
             super(itemView);
-            mListener = listener;
+            mListener = listener;//интерфейс для обработки кликов
             ButterKnife.bind(this, itemView);
         }
 
         @OnClick(R.id.bt_more)
         public void onClickButtonMore() {
-            mListener.onClickButtonCallback(itemView, getAdapterPosition());
+            mListener.onClickButtonCallback(itemView, getAdapterPosition());//передаем клик в Activity
         }
     }
 }

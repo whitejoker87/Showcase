@@ -13,16 +13,25 @@ public class App extends Application {
     private static ISandytrastAPI sandytrastAPI;
     private Retrofit retrofit;
 
-    public static final String TAG_OFFERS_LIST_FRAGMENT = "offers_list";
-    public static final String TAG_OFFER_DESCRIPTION_FRAGMENT = "description";
-    public static final String TAG_EMPTY_FRAGMENT = "empty";
-    public static final String TAG_ABOUT_FRAGMENT = "about";
+    private static OfferModel offerModel;
+
+    //синглтон-оъбект с инфой из JSON
+    public static synchronized OfferModel getOfferModel() {
+        if (offerModel == null) {
+            offerModel = new OfferModel();
+        }
+        return offerModel;
+    }
+
+    public static synchronized void setOfferModel(OfferModel offerModel) {
+        App.offerModel = offerModel;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()//запрос для загрузки JSON
                 .baseUrl("http://sandytrast.info")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -31,5 +40,5 @@ public class App extends Application {
 
     public static ISandytrastAPI getAPI() {
         return sandytrastAPI;
-    }
+    }//интерфейс для загрузки JSON
 }

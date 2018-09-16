@@ -2,7 +2,7 @@
     <string name="app_name">Showcase</string>
     <string name="title_offer">Название</string>
     <string name="dercr_offer">Описание оффера</string>
-    <string name="more_offer">Перейти</string>
+    <string name="more_offer">Кнопка перехода</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -11,4 +11,5 @@
     <string name="name_about">Название приложения:</string>
     <string name="descr_about">Описание:</string>
     <string name="btn_exit">Выход</string>
+    <string name="btn_url_text">Открыть ссылку</string>
 </resources>
