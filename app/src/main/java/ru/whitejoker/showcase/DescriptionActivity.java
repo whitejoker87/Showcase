@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -23,9 +20,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
-public class DescriptionFragment extends Fragment {
+public class DescriptionActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_logo_descr)
     ImageView logoDescr;
@@ -38,37 +34,15 @@ public class DescriptionFragment extends Fragment {
     @BindView(R.id.wv_descr)
     WebView webView;
 
-
-    private OnFragmentInteractionListener mListener;
-
     private OfferModel.Offer offerDescr;
-    private Unbinder unbinder;
-    private String url;
-
-    public DescriptionFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_descriprion, container, false);
-        unbinder = ButterKnife.bind(this,view);
-//        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_exit).setVisible(false);
-//        ((OffersActivity)getActivity()).toolbar.getMenu().findItem(R.id.action_about).setVisible(true);
-//        ((OffersActivity)getActivity()).toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
-//        ((OffersActivity)getActivity()).toolbar.setTitle("Описание оффера");
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_description);
 
-//        if(url == null){
-//            url = offerDescr.getUrl();
-//        }
+        ButterKnife.bind(this);
 
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         if(offerDescr != null) {
             Picasso.get().load(offerDescr.getLogo()).into(logoDescr);
             titleDescr.setText(offerDescr.getName());
@@ -76,13 +50,6 @@ public class DescriptionFragment extends Fragment {
             openUrlButton.setText(offerDescr.getBtn2());
         }
         webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
     }
 
     public void setOffer(OfferModel.Offer offer){
@@ -95,7 +62,7 @@ public class DescriptionFragment extends Fragment {
             Uri url = Uri.parse(offerDescr.getUrl());
             Intent urlIntent = new Intent(Intent.ACTION_VIEW, url);
             // Проверка на споссобность обработать intent
-            PackageManager packageManager = getActivity().getPackageManager();
+            PackageManager packageManager = getPackageManager();
             List<ResolveInfo> activities = packageManager.queryIntentActivities(urlIntent, 0);
             boolean isIntentSafe = activities.size() > 0;
             if (isIntentSafe) {
@@ -103,7 +70,7 @@ public class DescriptionFragment extends Fragment {
             }
         } else {
             webView.setVisibility(View.VISIBLE);
-            webView.loadUrl(url);
+            webView.loadUrl(offerDescr.getUrl());
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -112,20 +79,5 @@ public class DescriptionFragment extends Fragment {
                 }
             });
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
